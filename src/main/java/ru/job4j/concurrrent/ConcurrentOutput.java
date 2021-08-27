@@ -19,7 +19,12 @@ public class ConcurrentOutput {
                     }
                 }
         );*/
+        Thread second  = new Thread(
+                // В конструкторе нового объекта задайте вывод на консоль имени новой нити.
+                () -> System.out.println(Thread.currentThread().getName())
+        );
         another.start();
+        second.start();
         //another.run();
         System.out.println(Thread.currentThread().getName());
     }
