@@ -1,4 +1,4 @@
-package ru.job4j.concurrrent;
+package ru.job4j.concurrent;
 
 /**
  * 1. Запуск нити. Thread#start() [#1016]00
