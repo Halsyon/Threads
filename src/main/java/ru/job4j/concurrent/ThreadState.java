@@ -11,24 +11,25 @@ public class ThreadState {
     public static void main(String[] args) {
         //Чтобы получить состояние нити можно воспользоваться методом - getState().
         Thread first = new Thread(
-                () -> System.out.println(" first")
+                // В конструкторе нового объекта задайте вывод на консоль имени новой нити.
+                () -> System.out.println(Thread.currentThread().getName())
         );
-        Thread second  = new Thread(
-                () -> System.out.println(" second")
+        Thread second = new Thread(
+                // В конструкторе нового объекта задайте вывод на консоль имени новой нити.
+                () -> System.out.println(Thread.currentThread().getName())
         );
         System.out.println("first : " + first.getState());
         System.out.println("second : " + first.getState());
-
+//Метод Thread#start() указывает виртуальной машине,
+// что операторы описанные в конструкторе нужно запустить в отдельной нити.
         first.start();
-       second.start();
-
+        second.start();
         while (first.getState() != Thread.State.TERMINATED) {
             System.out.println("First : " + first.getState());
         }
         while (second.getState() != Thread.State.TERMINATED) {
             System.out.println("Second : " + second.getState());
         }
-        System.out.println("first : " + first.getState());
-        System.out.println("second : " + second.getState());
+        System.out.println(Thread.currentThread().getName() + " " + first.getState());
     }
 }
