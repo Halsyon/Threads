@@ -32,7 +32,7 @@ public class ConsoleProgress implements Runnable {
                     System.out.print("\rLoading : " + process[i]);
                 }
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
         }
     }

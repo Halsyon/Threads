@@ -11,18 +11,22 @@ public class ThreadStop {
     //while (!Thread.currentThread().isInterrupted()) {
     //Если он выставлен, то мы не заходим больше в тело цикла и выходим из метода run().
     public static void main(String[] args) throws InterruptedException {
-        Thread thread = new Thread(
+        Thread progress = new Thread(
                 () -> {
-                    int count = 0;
                     while (!Thread.currentThread().isInterrupted()) {
-                        System.out.println(count++);
+                        try {
+                            System.out.println("start ...");
+                            Thread.sleep(10000);
+                        } catch (InterruptedException e) {
+                            System.out.println(Thread.currentThread().isInterrupted());
+                            System.out.println(Thread.currentThread().getState());
+                        }
                     }
                 }
         );
-        thread.start();
-        System.out.println("до сна______________-------------------");
+        progress.start();
         Thread.sleep(1000);
-        System.out.println("Спать 1000 мил / иначе 1 секунда");
-        thread.interrupt();
+        progress.interrupt();
+        progress.join();
     }
 }
