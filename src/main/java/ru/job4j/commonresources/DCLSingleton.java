@@ -1,4 +1,4 @@
-package ru.job4j.commonResources;
+package ru.job4j.commonresources;
 
 /**
  * 2. Модель памяти Java [#267917]
@@ -12,7 +12,7 @@ public final class DCLSingleton {
     }
 
     public static DCLSingleton instOf() {
-        if(inst == null) {
+        if (inst == null) {
             synchronized (DCLSingleton.class) {
                 if (inst == null) {
                     inst = new DCLSingleton();

@@ -1,4 +1,4 @@
-package ru.job4j.commonResources;
+package ru.job4j.commonresources;
 
 /**
  * 1. Синхронизация общих ресурсов. [#1096]
