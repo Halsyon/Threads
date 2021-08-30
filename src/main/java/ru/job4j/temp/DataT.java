@@ -32,6 +32,6 @@ public class DataT {
         System.out.println("minuti : " + minutes);
         System.out.println("seconds : " + seconds);
         int finish = seconds;
-        System.out.println("итого время выполнения Ж " + finish);
+        System.out.println("итого время выполнения : " + finish);
     }
 }
