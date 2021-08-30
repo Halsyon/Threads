@@ -16,11 +16,25 @@ import java.net.URL;
  */
 public class WgetF implements Runnable {
     private final String url;
+    private final String fileName;
     private final int speed;
 
-    public WgetF(String url, int speed) {
+    public WgetF(String url, String fileName, int speed) {
         this.url = url;
+        this.fileName = fileName;
         this.speed = speed;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public int getSpeed() {
+        return speed;
     }
 
 //Считывает байты из этого входного потока байтов в указанный массив байтов,
@@ -37,30 +51,35 @@ public class WgetF implements Runnable {
 //Если первый readв базовом потоке возвращается, -1чтобы указать конец файла, этот метод возвращается -1.
 // В противном случае этот метод возвращает количество фактически прочитанных байтов.
 
+    /**
+     * Метод проводит скачивание файла из сети, при скачивании проводиться
+     * ограничение скорости в случае превышения заданного порога
+     * скачивание возможно как в файл по умолчанию так и в указанный пользователем файл
+     */
     @Override
     public void run() {
+        long startTime;
         //String file = "https://raw.githubusercontent.com/peterarsentev/course_test/master/pom.xml";
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
-             FileOutputStream fileOutputStream = new FileOutputStream("pom_tmp.xml")) {
+             FileOutputStream fileOutputStream = new FileOutputStream(fileName)) {
             // System.out.println("URL :" + url);
             byte[] dataBuffer = new byte[1024];
             int bytesRead;
-            long startTime = System.currentTimeMillis();
-            bytesRead = in.read(dataBuffer, 0, 1024);
-            long totalTime = System.currentTimeMillis() - startTime;
-            while ((bytesRead != -1)) {
-                // System.out.println("totalTime : " + totalTime);
+            startTime = System.currentTimeMillis();
+            while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+                fileOutputStream.write(dataBuffer, 0, bytesRead);
+                long totalTime = System.currentTimeMillis() - startTime;
+                //System.out.println("totalTime : " + totalTime);
                 if (totalTime < speed) {
                     try {
                         int time = (int) totalTime * 1000;
-                        // System.out.println("Time sleep milliseconds " + time);
+                        //System.out.println("Time sleep milliseconds " + time);
                         Thread.sleep(time);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
                 }
-                fileOutputStream.write(dataBuffer, 0, bytesRead);
-                bytesRead = in.read(dataBuffer, 0, 1024);
+                startTime = System.currentTimeMillis();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -68,9 +87,24 @@ public class WgetF implements Runnable {
     }
 
     public static void main(String[] args) throws InterruptedException {
+// скачивание без указания имени файла в аргументах
+        /*String url = args[0];
+        int speed = Integer.parseInt(args[1]);
+        if (args.length < 2) {
+            throw new IllegalArgumentException("You may not have specified one of the arguments");
+        }
+        Thread wget = new Thread(new WgetF(url, speed));
+        wget.start();
+        wget.join();*/
+
+// вариант в случае указывания пользователем файла в который мы будем скачивать
         String url = args[0];
         int speed = Integer.parseInt(args[1]);
-        Thread wget = new Thread(new WgetF(url, speed));
+        String nameF = args[2];
+        if (args.length < 3) {
+            throw new IllegalArgumentException("You may not have specified one of the arguments");
+        }
+        Thread wget = new Thread(new WgetF(url, nameF, speed));
         wget.start();
         wget.join();
     }
