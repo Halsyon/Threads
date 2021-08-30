@@ -22,7 +22,6 @@ public class DataT {
         long totalTime = System.currentTimeMillis() - startTime;
         System.out.println("Тотал тайм : " + totalTime);
 
-
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(totalTime);
         //Получаем минуты/секунды (без нулей в начале):
