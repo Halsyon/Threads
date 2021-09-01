@@ -1,5 +1,7 @@
 package ru.job4j.resourcesynchroni;
 
+import net.jcip.annotations.Immutable;
+
 import java.util.Objects;
 
 /**
@@ -7,6 +9,7 @@ import java.util.Objects;
  * Уровень : 3. Мидл Категория : 3.1. Multithreading Топик : 3.1.3. Синхронизация ресурсов
  * В этом задании нужно сделать блокирующий кеш UserStorage для модели User.
  */
+@Immutable
 public class User {
     private int id;
     private int amount;

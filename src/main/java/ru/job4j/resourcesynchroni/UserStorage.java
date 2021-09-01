@@ -1,8 +1,13 @@
 package ru.job4j.resourcesynchroni;
 
 import net.jcip.annotations.ThreadSafe;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 3. Класс хранилища пользователей UserStorage [#1104]
@@ -20,16 +25,23 @@ import java.util.List;
 @ThreadSafe
 public class UserStorage {
 
-    private final List<User> userList = new ArrayList<>();
+    private final ConcurrentHashMap<Integer, User> userList = new ConcurrentHashMap<>();
+    //private final AtomicInteger id = new AtomicInteger();
 
     /**
      * Method execute adding Object User to userList
+     * Returns:
+     * the previous value associated with key (in case true), or null if there was no mapping for key.
      *
      * @param user object User
      * @return true or false
      */
     public synchronized boolean add(User user) {
-        return userList.add(new User(user.getId(), user.getAmount()));
+        var k = userList.put(user.getId(), new User(user.getId(), user.getAmount()));
+        if (k == null) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -39,20 +51,20 @@ public class UserStorage {
      * @return true if it was successful or false
      */
     public synchronized boolean update(User user) {
-
-        for (User u : userList) {
-            if (u.getId() == user.getId()) {
-                System.out.println("enter");
-                var i = userList.indexOf(u);
-                userList.set(i, new User(user.getId(), user.getAmount()));
-                return true;
-            }
+        if (userList.get(user.getId()).getId() == user.getId()) {
+            userList.put(user.getId(), new User(user.getId(), user.getAmount()));
+            return true;
         }
         return false;
     }
 
+    /**
+     * Method execute delete Object User from userList ConcurrentHashMap
+     * @param user Object
+     * @return true if it was successful or false
+     */
     public synchronized boolean delete(User user) {
-        return userList.remove(new User(user.getId(), user.getAmount()));
+        return userList.remove(user.getId(), user);
     }
 
     /**
@@ -64,19 +76,16 @@ public class UserStorage {
      * @return true if it was successful or false
      */
     public synchronized boolean transfer(int fromId, int toId, int amount) {
+        User user = null;
+        User user1 = null;
         if (fromId == 0 || toId == 0 || amount == 0) {
             return false;
         }
-        User user = null;
-        User user1 = null;
-        for (User u : userList) {
-            if (u.getId() == fromId) {
-                user = new User(u.getId(), u.getAmount() - amount); //from
-            }
-            if (u.getId() == toId) {
-                user1 = new User(u.getId(), u.getAmount() + amount); //to
-            }
-        }
+        user = new User(userList.get(fromId).getId(),
+                userList.get(fromId).getAmount() - amount); //from
+
+        user1 = new User(userList.get(toId).getId(),
+                userList.get(toId).getAmount() + amount); //to
         update(user);
         update(user1);
         return true;
