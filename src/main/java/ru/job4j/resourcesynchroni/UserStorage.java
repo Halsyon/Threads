@@ -37,11 +37,13 @@ public class UserStorage {
      * @return true or false
      */
     public synchronized boolean add(User user) {
-        var k = userList.put(user.getId(), new User(user.getId(), user.getAmount()));
+        var k = userList.putIfAbsent(user.getId(), new User(user.getId(), user.getAmount()));
+        /* var k = userList.put(user.getId(), new User(user.getId(), user.getAmount()));*/
         if (k == null) {
             return true;
         }
         return false;
+
     }
 
     /**
@@ -51,8 +53,8 @@ public class UserStorage {
      * @return true if it was successful or false
      */
     public synchronized boolean update(User user) {
-        if (userList.get(user.getId()).getId() == user.getId()) {
-            userList.put(user.getId(), new User(user.getId(), user.getAmount()));
+        var k = userList.replace(user.getId(), new User(user.getId(), user.getAmount()));
+        if (k != null) {
             return true;
         }
         return false;
@@ -60,6 +62,7 @@ public class UserStorage {
 
     /**
      * Method execute delete Object User from userList ConcurrentHashMap
+     *
      * @param user Object
      * @return true if it was successful or false
      */
@@ -76,19 +79,16 @@ public class UserStorage {
      * @return true if it was successful or false
      */
     public synchronized boolean transfer(int fromId, int toId, int amount) {
-        User user = null;
-        User user1 = null;
-        if (fromId == 0 || toId == 0 || amount == 0) {
-            return false;
+        User userFrom = userList.get(fromId);
+        User userTo = userList.get(toId);
+        if (userFrom != null && userTo != null) {
+            if (userFrom.getAmount() >= amount) {
+                userFrom.setAmount(userFrom.getAmount() - amount);
+                userTo.setAmount(userTo.getAmount() + amount);
+                return true;
+            }
         }
-        user = new User(userList.get(fromId).getId(),
-                userList.get(fromId).getAmount() - amount); //from
-
-        user1 = new User(userList.get(toId).getId(),
-                userList.get(toId).getAmount() + amount); //to
-        update(user);
-        update(user1);
-        return true;
+        return false;
     }
 
     /**
