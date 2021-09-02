@@ -6,7 +6,7 @@ package ru.job4j.waitnotify3j1;
  * Разработайте класс, который блокирует выполнение по условию счетчика.
  *
  * @author SlartiBartFast-art
- * @version 0.1
+ * @version 0.2
  * @since 09.02.2021
  */
 public class CountBarrier {
@@ -38,7 +38,7 @@ public class CountBarrier {
      */
     public void await() {
         synchronized (monitor) {
-            while (count >= total) {
+            while (count < total) {
                 try {
                     monitor.wait();
 //Метод wait переводит нить в состояние ожидания, если программа не может дальше выполняться.
