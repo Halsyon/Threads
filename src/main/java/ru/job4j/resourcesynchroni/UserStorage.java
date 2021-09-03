@@ -2,12 +2,7 @@ package ru.job4j.resourcesynchroni;
 
 import net.jcip.annotations.ThreadSafe;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 3. Класс хранилища пользователей UserStorage [#1104]
@@ -21,6 +16,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 4. И особый метод transfer(int fromId, int toId, int amount);
  * 5. Структура данных должна быть потокобезопасная;
  * 6. В структуре User Должны быть поля int id, int amount.
+ * @author SlartiBartFast-art
+ * @version 0.5
+ * @since 01.09.2021
  */
 @ThreadSafe
 public class UserStorage {
@@ -37,13 +35,7 @@ public class UserStorage {
      * @return true or false
      */
     public synchronized boolean add(User user) {
-        var k = userList.putIfAbsent(user.getId(), new User(user.getId(), user.getAmount()));
-        /* var k = userList.put(user.getId(), new User(user.getId(), user.getAmount()));*/
-        if (k == null) {
-            return true;
-        }
-        return false;
-
+        return userList.putIfAbsent(user.getId(), user) == null;
     }
 
     /**
@@ -53,11 +45,7 @@ public class UserStorage {
      * @return true if it was successful or false
      */
     public synchronized boolean update(User user) {
-        var k = userList.replace(user.getId(), new User(user.getId(), user.getAmount()));
-        if (k != null) {
-            return true;
-        }
-        return false;
+        return userList.replace(user.getId(), user) != null;
     }
 
     /**
