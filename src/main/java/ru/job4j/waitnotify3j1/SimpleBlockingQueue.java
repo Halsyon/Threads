@@ -16,7 +16,7 @@ import java.util.Queue;
  *
  * @param <T> generic type
  * @author SlartiBartFast-art
- * @version 0.1
+ * @version 0.2
  * @since 03.09.2021
  */
 @ThreadSafe
@@ -24,40 +24,42 @@ public class SimpleBlockingQueue<T> {
     @GuardedBy("this")
     private Queue<T> queue = new LinkedList<T>();  //блокирующая очередь ограниченная по размеру
 
-    public void offer(T value) { // Producer помещает данные в очередь
-        synchronized (this) {
-//queue.offer(value) Немедленное размещение элемента в очереди при наличие свободного места;
-// метод вернет true при успешном завершении операции, в противном случае вернет false.
-            while (!queue.offer(value)) {
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-            }
-            notify();
-        }
-    }
-
     /**
      * Метод poll() должен вернуть объект из внутренней коллекции.
      * Если в коллекции объектов нет, то нужно перевести текущую нить в состояние ожидания.
      * Важный момент, когда нить переводить в состояние ожидания, то она отпускает объект монитор
      * и другая нить тоже может выполнить этот метод.
      *
-     * @return
+     * @return Object T or null
      */
-    public T poll() { //Consumer извлекает данные из очереди
+    public T poll() { // Consumer извлекает данные из очереди
         synchronized (this) {
-            while (queue.isEmpty()) {
+            while (queue.peek() == null) { // голова этой двухсторонней очереди, или null, если эта двухсторонняя очередь пуста
                 try {
                     wait(); // перевести текущую нить в состояние ожидания.
-                    queue.notify(); // она отпускает объект монитор
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
+                notify(); // она отпускает объект монитор
             }
             return queue.poll();
+        }
+    }
+
+    public void offer(T value) { // Producer помещает данные в очередь
+        synchronized (this) {
+//queue.offer(value) Немедленное размещение элемента в очереди при наличие свободного места;
+// метод вернет true при успешном завершении операции, в противном случае вернет false.
+            while (!queue.offer(value)) {
+                try {
+//Для того чтобы нить перевести в ждущее состояние необходимо в ее процессе вызвать метод wait()
+// для объекта монитора.
+                    wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+                notify();
+            }
         }
     }
 }
