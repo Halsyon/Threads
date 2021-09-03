@@ -16,7 +16,7 @@ import java.util.Queue;
  *
  * @param <T> generic type
  * @author SlartiBartFast-art
- * @version 0.2
+ * @version 0.3
  * @since 03.09.2021
  */
 @ThreadSafe
@@ -41,8 +41,8 @@ public class SimpleBlockingQueue<T> {
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
-                notify(); // она отпускает объект монитор
             }
+            notify(); // она отпускает объект монитор
             return queue.poll();
         }
     }
@@ -61,6 +61,8 @@ public class SimpleBlockingQueue<T> {
                 }
                 notify();
             }
+            queue.offer(value);
+            notify();
         }
     }
 }
