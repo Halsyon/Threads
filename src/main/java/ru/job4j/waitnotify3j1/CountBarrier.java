@@ -7,7 +7,7 @@ package ru.job4j.waitnotify3j1;
  *
  * @author SlartiBartFast-art
  * @version 0.2
- * @since 09.02.2021
+ * @since 02.09.2021
  */
 public class CountBarrier {
     //строчка кода сделана для наглядности объекта монитора.
