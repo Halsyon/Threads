@@ -13,10 +13,12 @@ import java.util.Queue;
  * до тех пор пока Consumer не извлечет очередные данные,т.е.в очереди появится свободное место.
  * И наоборот если очередь пуста поток Consumer блокируется,до тех пор пока Producer не поместит
  * в очередь данные.
+ * Важно !  - на мониторе какого объекта вы делает синхронизацию, на томже самом объекте
+ * вы должны делать wait() и notify()
  *
  * @param <T> generic type
  * @author SlartiBartFast-art
- * @version 0.3
+ * @version 0.4
  * @since 03.09.2021
  */
 @ThreadSafe
@@ -37,12 +39,12 @@ public class SimpleBlockingQueue<T> {
 // peek()- голова этой двухсторонней очереди, или null, если эта двухсторонняя очередь пуста
             while (queue.peek() == null) {
                 try {
-                    wait(); // перевести текущую нить в состояние ожидания.
+                    queue.wait(); // перевести текущую нить в состояние ожидания.
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
             }
-            notify(); // она отпускает объект монитор
+            queue.notify(); // она отпускает объект монитор
             return queue.poll();
         }
     }
@@ -55,14 +57,13 @@ public class SimpleBlockingQueue<T> {
                 try {
 //Для того чтобы нить перевести в ждущее состояние необходимо в ее процессе вызвать метод wait()
 // для объекта монитора.
-                    wait();
+                    queue.wait();
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
-                notify();
             }
             queue.offer(value);
-            notify();
+            queue.notify();
         }
     }
 }
