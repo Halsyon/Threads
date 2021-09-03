@@ -22,7 +22,7 @@ import java.util.Queue;
 @ThreadSafe
 public class SimpleBlockingQueue<T> {
     @GuardedBy("this")
-    private Queue<T> queue = new LinkedList<T>();  //блокирующая очередь ограниченная по размеру
+    private Queue<T> queue = new LinkedList<>();  //блокирующая очередь ограниченная по размеру
 
     /**
      * Метод poll() должен вернуть объект из внутренней коллекции.
@@ -34,7 +34,8 @@ public class SimpleBlockingQueue<T> {
      */
     public T poll() { // Consumer извлекает данные из очереди
         synchronized (this) {
-            while (queue.peek() == null) { // голова этой двухсторонней очереди, или null, если эта двухсторонняя очередь пуста
+// peek()- голова этой двухсторонней очереди, или null, если эта двухсторонняя очередь пуста
+            while (queue.peek() == null) {
                 try {
                     wait(); // перевести текущую нить в состояние ожидания.
                 } catch (InterruptedException e) {
