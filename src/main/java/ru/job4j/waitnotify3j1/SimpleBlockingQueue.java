@@ -17,7 +17,7 @@ import java.util.Queue;
  * вы должны делать wait() и notify()
  * wait() - освобождает монитор и переводит вызывающий поток в состояние ожидания до тех пор,
  * пока друггой поток не вызовет метод notify();
- *
+ *synchronize идет по объекту с аннотацией  @GuardedBy("this") - объект монитора
  * @param <T> generic type
  * @author SlartiBartFast-art
  * @version 0.5
