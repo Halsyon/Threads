@@ -17,7 +17,8 @@ import java.util.Queue;
  * вы должны делать wait() и notify()
  * wait() - освобождает монитор и переводит вызывающий поток в состояние ожидания до тех пор,
  * пока друггой поток не вызовет метод notify();
- *synchronize идет по объекту с аннотацией  @GuardedBy("this") - объект монитора
+ * synchronize идет по объекту с аннотацией  @GuardedBy("this") - объект монитора
+ *
  * @param <T> generic type
  * @author SlartiBartFast-art
  * @version 0.5
@@ -27,7 +28,7 @@ import java.util.Queue;
 public class SimpleBlockingQueue<T> {
     @GuardedBy("this")
     private Queue<T> queue = new LinkedList<>();  //блокирующая очередь ограниченная по размеру
-//поле с  типом int, которое будет ограничивать очередь сверху
+    //поле с  типом int, которое будет ограничивать очередь сверху
     private int count = 0;
 
     /**
@@ -38,32 +39,46 @@ public class SimpleBlockingQueue<T> {
      *
      * @return Object T or null
      */
-    public synchronized T poll() throws InterruptedException { // Consumer извлекает данные из очереди
+    public T poll() throws InterruptedException { // Consumer извлекает данные из очереди
         // peek()- голова этой двухсторонней очереди, или null, если эта двухсторонняя очередь пуста
         //while (queue.peek() == null) {
-        while (count < 1) {
+        synchronized (queue) {
+            while (count < 1) {
 //wait() - выбрасывает InterruptedException поэтому работаем с ним в блоке try-catch
-            queue.wait(); // перевести текущую нить в состояние ожидания.
-        }
-        count--;
+                queue.wait(); // перевести текущую нить в состояние ожидания.
+            }
+            count--;
 //notify() - не освобождает монитор и будит поток, у которого ранее был вызван метод wait();
-        queue.notify(); // она отпускает объект монитор
+            queue.notify(); // она отпускает объект монитор
+        }
         return queue.poll();
     }
 
-    public synchronized void offer(T value) throws InterruptedException { // Producer помещает данные в очередь
+    /**
+     * Метод проводит немедленное размещение элемента в очереди при наличие свободного места;
+     *
+     * @param value любое значение заданное в качестве объекта очереди
+     * @throws InterruptedException возможное исключение в методе в случае вызова метода wait()
+     */
+    public void offer(T value) throws InterruptedException { // Producer помещает данные в очередь
 //queue.offer(value) Немедленное размещение элемента в очереди при наличие свободного места;
 // метод вернет true при успешном завершении операции, в противном случае вернет false.
 //поле count - искуственное ограничение очереди размером в 5 элементов,
 // если оно == или превышает ставим текущий поток в ожидание
-        while (count >= 5) {
+        synchronized (queue) {
+            while (count >= 5) {
 //Для того чтобы нить перевести в ждущее состояние необходимо в ее процессе вызвать метод wait()
 // для объекта монитора.
-            queue.wait();
+                queue.wait();
+            }
+            queue.offer(value);
+            count++;
+            queue.notify();
         }
-        queue.offer(value);
-        count++;
-        queue.notify();
+    }
+
+    public synchronized boolean isEmpty() {
+        return queue.isEmpty();
     }
 }
 
