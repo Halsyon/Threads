@@ -33,7 +33,7 @@ public class ParallelSearch {
         );
         final Thread consumer = new Thread(
                 () -> {
-                   // System.out.println(!Thread.currentThread().isInterrupted());
+                    // System.out.println(!Thread.currentThread().isInterrupted());
                     while (!Thread.currentThread().isInterrupted()) {
                         if (!queue.isEmpty()) {
                             try {

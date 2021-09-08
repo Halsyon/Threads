@@ -20,6 +20,7 @@ import java.util.Queue;
  * synchronize идет по объекту с аннотацией  @GuardedBy("this") - объект монитора
  * private Queue<T> queue = new LinkedList<>() -блокирующая очередь ограниченная по размеру
  * count - поле с  типом int, которое будет ограничивать очередь сверху
+ *
  * @param <T> generic type
  * @author SlartiBartFast-art
  * @since 03.09.2021
@@ -36,28 +37,6 @@ public class SimpleBlockingQueue<T> {
 
     public SimpleBlockingQueue(int count) {
         this.count = count;
-    }
-
-    /**
-     * Метод poll() должен вернуть объект из внутренней коллекции.
-     * Если в коллекции объектов нет, то нужно перевести текущую нить в состояние ожидания.
-     * Важный момент, когда нить переводить в состояние ожидания, то она отпускает объект монитор
-     * и другая нить тоже может выполнить этот метод.
-     * Consumer извлекает данные из очереди
-     * wait(); // перевести текущую нить в состояние ожидания.
-     * wait() - выбрасывает InterruptedException поэтому работаем с ним в блоке try-catch
-     * notify(); // она отпускает объект монитор
-     * notify() - не освобождает монитор и будит поток, у которого ранее был вызван метод wait();
-     * peek()- голова этой двухсторонней очереди, или null, если эта двухсторонняя очередь пуста
-     *
-     * @return Object T or null
-     */
-    public synchronized T poll() throws InterruptedException {
-        while (queue.size() == 0) {
-            wait();
-        }
-        notify();
-        return queue.poll();
     }
 
     /**
@@ -81,8 +60,39 @@ public class SimpleBlockingQueue<T> {
         notify();
     }
 
+    /**
+     * Метод poll() должен вернуть объект из внутренней коллекции.
+     * Если в коллекции объектов нет, то нужно перевести текущую нить в состояние ожидания.
+     * Важный момент, когда нить переводить в состояние ожидания, то она отпускает объект монитор
+     * и другая нить тоже может выполнить этот метод.
+     * Consumer извлекает данные из очереди
+     * wait(); // перевести текущую нить в состояние ожидания.
+     * wait() - выбрасывает InterruptedException поэтому работаем с ним в блоке try-catch
+     * notify(); // она отпускает объект монитор
+     * notify() - не освобождает монитор и будит поток, у которого ранее был вызван метод wait();
+     * peek()- голова этой двухсторонней очереди, или null, если эта двухсторонняя очередь пуста
+     *
+     * @return Object T or null
+     */
+    public synchronized T poll() throws InterruptedException {
+        while (queue.size() == 0) {
+            wait();
+        }
+        var t = queue.poll();
+        notify();
+        return t;
+    }
+
     public synchronized boolean isEmpty() {
         return queue.isEmpty();
+    }
+
+    @Override
+    public String toString() {
+        return "SimpleBlockingQueue{"
+                + "queue=" + queue
+                + ", count=" + count
+                + '}';
     }
 }
 
