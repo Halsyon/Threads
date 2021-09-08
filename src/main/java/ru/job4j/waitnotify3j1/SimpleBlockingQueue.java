@@ -29,7 +29,10 @@ public class SimpleBlockingQueue<T> {
 
     @GuardedBy("this")
     private Queue<T> queue = new LinkedList<>();
-    private int count = 0;
+    private int count = 42;
+
+    public SimpleBlockingQueue() {
+    }
 
     public SimpleBlockingQueue(int count) {
         this.count = count;
@@ -50,7 +53,7 @@ public class SimpleBlockingQueue<T> {
      * @return Object T or null
      */
     public synchronized T poll() throws InterruptedException {
-        while (queue.peek() == null) {
+        while (queue.size() == 0) {
             wait();
         }
         notify();
@@ -71,7 +74,7 @@ public class SimpleBlockingQueue<T> {
      * @throws InterruptedException возможное исключение в методе в случае вызова метода wait()
      */
     public synchronized void offer(T value) throws InterruptedException {
-        while (queue.size() >= count) {
+        while (queue.size() == count) {
             wait();
         }
         queue.offer(value);
