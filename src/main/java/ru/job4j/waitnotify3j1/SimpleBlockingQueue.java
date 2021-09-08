@@ -16,65 +16,66 @@ import java.util.Queue;
  * Важно !  - на мониторе какого объекта вы делает синхронизацию, на томже самом объекте
  * вы должны делать wait() и notify()
  * wait() - освобождает монитор и переводит вызывающий поток в состояние ожидания до тех пор,
- * пока друггой поток не вызовет метод notify();
+ * пока другой поток не вызовет метод notify();
  * synchronize идет по объекту с аннотацией  @GuardedBy("this") - объект монитора
- *
+ * private Queue<T> queue = new LinkedList<>() -блокирующая очередь ограниченная по размеру
+ * count - поле с  типом int, которое будет ограничивать очередь сверху
  * @param <T> generic type
  * @author SlartiBartFast-art
- * @version 0.5
  * @since 03.09.2021
  */
 @ThreadSafe
 public class SimpleBlockingQueue<T> {
+
     @GuardedBy("this")
-    private Queue<T> queue = new LinkedList<>();  //блокирующая очередь ограниченная по размеру
-    //поле с  типом int, которое будет ограничивать очередь сверху
+    private Queue<T> queue = new LinkedList<>();
     private int count = 0;
+
+    public SimpleBlockingQueue(int count) {
+        this.count = count;
+    }
 
     /**
      * Метод poll() должен вернуть объект из внутренней коллекции.
      * Если в коллекции объектов нет, то нужно перевести текущую нить в состояние ожидания.
      * Важный момент, когда нить переводить в состояние ожидания, то она отпускает объект монитор
      * и другая нить тоже может выполнить этот метод.
+     * Consumer извлекает данные из очереди
+     * wait(); // перевести текущую нить в состояние ожидания.
+     * wait() - выбрасывает InterruptedException поэтому работаем с ним в блоке try-catch
+     * notify(); // она отпускает объект монитор
+     * notify() - не освобождает монитор и будит поток, у которого ранее был вызван метод wait();
+     * peek()- голова этой двухсторонней очереди, или null, если эта двухсторонняя очередь пуста
      *
      * @return Object T or null
      */
-    public T poll() throws InterruptedException { // Consumer извлекает данные из очереди
-        // peek()- голова этой двухсторонней очереди, или null, если эта двухсторонняя очередь пуста
-        //while (queue.peek() == null) {
-        synchronized (queue) {
-            while (count < 1) {
-//wait() - выбрасывает InterruptedException поэтому работаем с ним в блоке try-catch
-                queue.wait(); // перевести текущую нить в состояние ожидания.
-            }
-            count--;
-//notify() - не освобождает монитор и будит поток, у которого ранее был вызван метод wait();
-            queue.notify(); // она отпускает объект монитор
+    public synchronized T poll() throws InterruptedException {
+        while (queue.peek() == null) {
+            wait();
         }
+        notify();
         return queue.poll();
     }
 
     /**
      * Метод проводит немедленное размещение элемента в очереди при наличие свободного места;
+     * Суть - Producer помещает данные в очередь
+     * queue.offer(value) Немедленное размещение элемента в очереди при наличие свободного места,
+     * метод вернет true при успешном завершении операции, в противном случае вернет false.
+     * поле count - искуственное ограничение очереди размером заданным при создании Очереди,
+     * если оно == или превышает ставим текущий поток в ожидание
+     * Для того чтобы нить перевести в ждущее состояние необходимо в ее процессе вызвать метод wait()
+     * для объекта монитора.
      *
      * @param value любое значение заданное в качестве объекта очереди
      * @throws InterruptedException возможное исключение в методе в случае вызова метода wait()
      */
-    public void offer(T value) throws InterruptedException { // Producer помещает данные в очередь
-//queue.offer(value) Немедленное размещение элемента в очереди при наличие свободного места;
-// метод вернет true при успешном завершении операции, в противном случае вернет false.
-//поле count - искуственное ограничение очереди размером в 5 элементов,
-// если оно == или превышает ставим текущий поток в ожидание
-        synchronized (queue) {
-            while (count >= 5) {
-//Для того чтобы нить перевести в ждущее состояние необходимо в ее процессе вызвать метод wait()
-// для объекта монитора.
-                queue.wait();
-            }
-            queue.offer(value);
-            count++;
-            queue.notify();
+    public synchronized void offer(T value) throws InterruptedException {
+        while (queue.size() >= count) {
+            wait();
         }
+        queue.offer(value);
+        notify();
     }
 
     public synchronized boolean isEmpty() {
