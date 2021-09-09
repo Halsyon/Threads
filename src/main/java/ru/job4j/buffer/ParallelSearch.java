@@ -23,7 +23,6 @@ public class ParallelSearch {
                     for (int index = 0; index != 3; index++) {
                         try {
                             queue.offer(index);
-                            //System.out.println(" queue.offer(index): " + index);
                             Thread.sleep(500);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -33,23 +32,20 @@ public class ParallelSearch {
         );
         final Thread consumer = new Thread(
                 () -> {
-                    // System.out.println(!Thread.currentThread().isInterrupted());
-                    while (!Thread.currentThread().isInterrupted()) {
-                        if (!queue.isEmpty()) {
-                            try {
-                                System.out.println(queue.poll());
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                                Thread.currentThread().interrupt();
-                            }
+                    while (!queue.isEmpty() || !Thread.currentThread().isInterrupted()) {
+                        try {
+                            System.out.println(queue.poll());
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                            Thread.currentThread().interrupt();
                         }
                     }
                 }
         );
 
         producer.start();
+        producer.join();
         consumer.start();
-        Thread.sleep(5000);
         consumer.interrupt();
     }
 }
