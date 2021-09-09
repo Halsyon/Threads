@@ -30,7 +30,7 @@ public class SimpleBlockingQueue<T> {
 
     @GuardedBy("this")
     private Queue<T> queue = new LinkedList<>();
-    private int count = 42;
+    private int count = Integer.MAX_VALUE;
 
     public SimpleBlockingQueue() {
     }
