@@ -17,6 +17,10 @@ import java.util.concurrent.atomic.AtomicReference;
  * Вторая нить будет заново читать ref и выполнять операцию compareAndSet.
  * Обе нити не блокируются, а выполняются параллельно.
  * throw new UnsupportedOperationException("Count is not impl."); // Подсчет не реализован
+ * Java.util.concurrent.atomic.AtomicBoolean.compareAndSet () — это встроенный метод в java,
+ * который устанавливает значение для переданного значения в параметре, если текущее значение
+ * равно ожидаемому значению, которое также передается в параметре. Функция возвращает логическое
+ * значение, которое дает нам представление, было ли обновление выполнено или нет.
  *
  * @author SlartiBartFast-art
  * @since 09.09.2021
@@ -24,6 +28,10 @@ import java.util.concurrent.atomic.AtomicReference;
 @NotThreadSafe
 public class CASCount {
     private final AtomicReference<Integer> count = new AtomicReference<>();
+
+    public CASCount() {
+        this.count.set(0);
+    }
 
     /**
      * Method do incrementation integer value in AtomicReference<Integer> count
@@ -33,20 +41,10 @@ public class CASCount {
     public void increment() {
         Integer next;
         Integer current;
-        if (count.get() == null) {
-            count.set(0);
-        }
         do {
             current = count.get();
-            System.out.println("current , " + current);
             next = current + 1;
-            System.out.println("current , " + current + " " + "next : " + next);
         } while (!count.compareAndSet(current, next));
-
-        if (current == Integer.MAX_VALUE) {
-            throw new UnsupportedOperationException("Count is not impl.");
-        }
-
     }
 
     /**
@@ -56,9 +54,6 @@ public class CASCount {
      * @return integer or throw UnsupportedOperationException
      */
     public int get() {
-        if (count.get() == null) {
-            throw new UnsupportedOperationException("Count is not impl.");
-        }
         return count.get();
     }
 }
