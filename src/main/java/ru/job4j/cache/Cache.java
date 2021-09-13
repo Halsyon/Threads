@@ -28,6 +28,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Cache {
     private final Map<Integer, Base> memory = new ConcurrentHashMap<>();
 
+    public Map<Integer, Base> getMemory() {
+        return memory;
+    }
+
     /**
      * The add(Object object) method of class Cache is used to
      * method ConcurrentHashMap class to putIfAbsent
@@ -55,13 +59,12 @@ public class Cache {
      * @return true or false
      */
     public boolean update(Base model) {
-        var rsl = memory.computeIfPresent(model.getId(), (key, val) -> {
+        return memory.computeIfPresent(model.getId(), (key, val) -> {
             if (val.getVersion() != model.getVersion()) {
                 throw new OptimisticException("version is not equals");
             }
             return new Base(key, val.getVersion() + 1);
-        });
-        return !model.equals(rsl);
+        }) != null;
     }
 
     /**
@@ -102,4 +105,7 @@ public class Cache {
                 + "memory=" + memory
                 + '}';
     }
+
+
 }
+

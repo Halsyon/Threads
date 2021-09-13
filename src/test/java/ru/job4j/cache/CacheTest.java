@@ -2,6 +2,9 @@ package ru.job4j.cache;
 
 import org.hamcrest.core.Is;
 import org.junit.Test;
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.Assert.*;
 
 /**
@@ -9,6 +12,7 @@ import static org.junit.Assert.*;
  * Уровень : 3. Мидл Категория : 3.1. Multithreading
  * Топик : 3.1.5. Non Blocking Algorithm
  * Напишите модульные тесты. Они будут не многопоточные, а последовательные.
+ *
  * @author SlartiBartFast-art
  * @since 11.09.2021
  */
@@ -30,8 +34,8 @@ public class CacheTest {
         Cache cache = new Cache();
         Base base1 = new Base(1, 1);
         cache.add(base1);
-        assertThat(cache.toString(),
-                Is.is("Cache{memory={1=Base{id=1, version=1, name='null'}}}"));
+        Base ex = cache.getMemory().get(1);
+        assertThat(ex, Is.is(base1));
     }
 
     @Test
@@ -42,8 +46,8 @@ public class CacheTest {
         cache.add(base1);
         cache.add(base2);
         cache.delete(base2);
-        assertThat(cache.toString(),
-                Is.is("Cache{memory={1=Base{id=1, version=1, name='null'}}}"));
+        Base exp = cache.getMemory().get(1);
+        assertThat(exp, Is.is(base1));
     }
 
     @Test(expected = OptimisticException.class)
@@ -59,15 +63,21 @@ public class CacheTest {
 
     @Test
     public void whenAddThenUpd() {
+        Map expL = new HashMap();
+        Map realL = new HashMap();
         Cache cache = new Cache();
         Base base1 = new Base(1, 1);
         Base base2 = new Base(2, 0);
         cache.add(base1);
         cache.add(base2);
         base2 = new Base(2, 0);
+        Base base3 = new Base(2, 1);
         cache.update(base2);
-        assertThat(cache.toString(),
-                Is.is("Cache{memory={1=Base{id=1, version=1, name='null'},"
-                        + " 2=Base{id=2, version=1, name='null'}}}"));
+        expL.put(1, base1);
+        expL.put(2, base3);
+        realL.putAll(cache.getMemory());
+
+        assertThat(realL,
+                Is.is(expL));
     }
 }
