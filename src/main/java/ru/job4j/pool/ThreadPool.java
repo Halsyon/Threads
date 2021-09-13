@@ -15,6 +15,8 @@ import java.util.List;
  * проснуться и начать работу.
  * run() - Когда объект, реализующий интерфейс Runnable, используется для создания потока,
  * запуск потока вызывает run вызов метода объекта в этом отдельно выполняемом потоке.
+ * int size = Runtime.getRuntime().availableProcessors()
+ * -Инициализация пула должна быть по количеству ядер в системе.
  *
  * @author SlartiBartFast-art
  * @since 11.09.2021
@@ -37,7 +39,7 @@ public class ThreadPool {
      * tasks - это блокирующая очередь. Если в очереди нет элементов,
      * * то нить переводиться в состоянии Thread.State.WAITING.
      *
-     * @param job
+     * @param job exercise
      */
     public synchronized void work(Runnable job) throws InterruptedException {
         tasks.offer(job);
