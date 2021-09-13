@@ -105,7 +105,5 @@ public class Cache {
                 + "memory=" + memory
                 + '}';
     }
-
-
 }
 
