@@ -17,9 +17,5 @@ public class Temp1 {
 
         //2. Создание отдельного пула
         ForkJoinPool forkJoinPool2 = new ForkJoinPool();
-
-        List<String> stringList = new ArrayList<>();
-        //stringList.get();
-
     }
 }

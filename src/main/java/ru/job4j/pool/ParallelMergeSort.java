@@ -3,6 +3,15 @@ package ru.job4j.pool;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
+/**
+ * 3. ForkJoinPool [#315067]
+ * Уровень : 3. Мидл Категория : 3.1.
+ * Multithreading Топик : 3.1.6. Пулы
+ * Пример испольщзования ForkJoinPool *
+ *
+ * @author SlartiBartFast-art
+ * @since 14.09.2021
+ */
 public class ParallelMergeSort extends RecursiveTask<int[]> {
     private final int[] array;
     private final int from;
@@ -17,7 +26,7 @@ public class ParallelMergeSort extends RecursiveTask<int[]> {
     @Override
     protected int[] compute() {
         if (from == to) {
-            return new int[] {array[from]};
+            return new int[]{array[from]};
         }
         int mid = (from + to) / 2;
         // создаем задачи для сортировки частей
@@ -37,5 +46,4 @@ public class ParallelMergeSort extends RecursiveTask<int[]> {
         ForkJoinPool forkJoinPool = new ForkJoinPool();
         return forkJoinPool.invoke(new ParallelMergeSort(array, 0, array.length - 1));
     }
-
 }

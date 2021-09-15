@@ -32,7 +32,6 @@ public class ParallelMergeSortArr extends RecursiveTask<Integer[]> {
         if ((to - from) <= 10) {
             for (int i = 0; i < array.length; i++) {
                 if (array[i].equals(element)) {
-                    System.out.println(new Integer[]{array[i]}.length + " ДЛИНА");
                     return new Integer[]{array[i]};
                 }
             }
@@ -49,7 +48,7 @@ public class ParallelMergeSortArr extends RecursiveTask<Integer[]> {
         // объединяем полученные результаты
         Integer[] left = leftSort.join();
         Integer[] right = rightSort.join();
-       var f = revers(MergeSort.merge(coup(left), coup(right)));
+        var f = revers(MergeSort.merge(coup(left), coup(right)));
         for (int i = 0; i < f.length; i++) {
             if (f[i] > 0) {
                 return new Integer[]{f[i]};
