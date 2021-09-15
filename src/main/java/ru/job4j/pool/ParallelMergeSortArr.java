@@ -1,6 +1,5 @@
 package ru.job4j.pool;
 
-import java.lang.reflect.Array;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
@@ -11,50 +10,71 @@ import java.util.concurrent.RecursiveTask;
  * Реализовать параллельный поиск индекса в массиве объектов. В целях оптимизации,
  * если размер массива не больше 10, использовать обычный линейный поиск.
  * Метод поиска должен быть обобщенным.
+ *
  * @author SlartiBartFast-art
  * @since 14.09.2021
  */
-public class ParallelMergeSortArr extends RecursiveTask<int[]> {
-    private final int[] array;
+public class ParallelMergeSortArr extends RecursiveTask<Integer[]> {
+    private final Integer[] array;
     private final int from;
     private final int to;
-    private final int index;
+    private final int element;
 
-    public ParallelMergeSortArr(int[] array, int from, int to, int index) {
+    public ParallelMergeSortArr(Integer[] array, int from, int to, int element) {
         this.array = array;
         this.from = from;
         this.to = to;
-        this.index = index;
+        this.element = element;
     }
 
     @Override
-    protected int[] compute() {
-        if (from == to) {
-            return new int[] {array[from]};
-        }
-        if (array.length <= 10) {
+    protected Integer[] compute() {
+        if ((to - from) <= 10) {
             for (int i = 0; i < array.length; i++) {
-                if (i == index) {
-                    return new int[] {array[i]};
+                if (array[i].equals(element)) {
+                    System.out.println(new Integer[]{array[i]}.length + " ДЛИНА");
+                    return new Integer[]{array[i]};
                 }
             }
+            return new Integer[]{-1};
         }
         int mid = (from + to) / 2;
         // создаем задачи для сортировки частей
-        ParallelMergeSortArr leftSort = new ParallelMergeSortArr(array, from, mid, index);
-        ParallelMergeSortArr rightSort = new ParallelMergeSortArr(array, mid + 1, to, index);
+        ParallelMergeSortArr leftSort = new ParallelMergeSortArr(array, from, mid, element);
+        ParallelMergeSortArr rightSort = new ParallelMergeSortArr(array, mid + 1, to, element);
         // производим деление.
         // оно будет происходить, пока в частях не останется по одному элементу
         leftSort.fork();
         rightSort.fork();
         // объединяем полученные результаты
-        int[] left = leftSort.join();
-        int[] right = rightSort.join();
-        return MergeSort.merge(left, right);
-
+        Integer[] left = leftSort.join();
+        Integer[] right = rightSort.join();
+       var f = revers(MergeSort.merge(coup(left), coup(right)));
+        for (int i = 0; i < f.length; i++) {
+            if (f[i] > 0) {
+                return new Integer[]{f[i]};
+            }
+        }
+        return new Integer[]{-1};
     }
 
-    public static int[] sort(int[] array) {
+    private int[] coup(Integer[] array) {
+        int[] arr2 = new int[array.length];
+        for (int i = 0; i < array.length; i++) {
+            arr2[i] = array[i];
+        }
+        return arr2;
+    }
+
+    private Integer[] revers(int[] array) {
+        Integer[] integers = new Integer[array.length];
+        for (int i = 0; i < array.length; i++) {
+            integers[i] = array[i];
+        }
+        return integers;
+    }
+
+    public static Integer[] sort(Integer[] array) {
         ForkJoinPool forkJoinPool = new ForkJoinPool();
         return forkJoinPool.invoke(new ParallelMergeSortArr(array, 0, array.length - 1, 3));
     }
