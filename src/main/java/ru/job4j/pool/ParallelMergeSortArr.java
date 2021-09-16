@@ -10,11 +10,18 @@ import java.util.concurrent.RecursiveTask;
  * Реализовать параллельный поиск индекса в массиве объектов. В целях оптимизации,
  * если размер массива не больше 10, использовать обычный линейный поиск.
  * Метод поиска должен быть обобщенным.
+ * public <T> T invoke ( задача ForkJoinTask <T>) - Выполняет данную задачу,
+ * возвращая результат по завершении. Если вычисление обнаруживает непроверенное исключение
+ * или ошибку, оно генерируется повторно как результат этого вызова.
+ * Повторно созданные исключения ведут себя так же, как и обычные исключения, но,
+ * когда это возможно, содержат трассировки стека (как показано, например,
+ * с помощью ex.printStackTrace()) как текущего потока, так и потока,
+ * фактически столкнувшегося с исключением; минимально только последнее.
  *
  * @author SlartiBartFast-art
  * @since 14.09.2021
  */
-public class ParallelMergeSortArr extends RecursiveTask<Integer[]> {
+public class ParallelMergeSortArr extends RecursiveTask<Integer> {
     private final Integer[] array;
     private final int from;
     private final int to;
@@ -28,14 +35,14 @@ public class ParallelMergeSortArr extends RecursiveTask<Integer[]> {
     }
 
     @Override
-    protected Integer[] compute() {
+    protected Integer compute() {
         if ((to - from) <= 10) {
             for (int i = 0; i < array.length; i++) {
                 if (array[i].equals(element)) {
-                    return new Integer[]{array[i]};
+                    return i;
                 }
             }
-            return new Integer[]{-1};
+            return -1;
         }
         int mid = (from + to) / 2;
         // создаем задачи для сортировки частей
@@ -46,35 +53,14 @@ public class ParallelMergeSortArr extends RecursiveTask<Integer[]> {
         leftSort.fork();
         rightSort.fork();
         // объединяем полученные результаты
-        Integer[] left = leftSort.join();
-        Integer[] right = rightSort.join();
-        var f = revers(MergeSort.merge(coup(left), coup(right)));
-        for (int i = 0; i < f.length; i++) {
-            if (f[i] > 0) {
-                return new Integer[]{f[i]};
-            }
-        }
-        return new Integer[]{-1};
+        Integer left = leftSort.join();
+        Integer right = rightSort.join();
+        return Math.max(left, right);
     }
 
-    private int[] coup(Integer[] array) {
-        int[] arr2 = new int[array.length];
-        for (int i = 0; i < array.length; i++) {
-            arr2[i] = array[i];
-        }
-        return arr2;
-    }
-
-    private Integer[] revers(int[] array) {
-        Integer[] integers = new Integer[array.length];
-        for (int i = 0; i < array.length; i++) {
-            integers[i] = array[i];
-        }
-        return integers;
-    }
-
-    public static Integer[] sort(Integer[] array) {
+    public static Integer sort(Integer[] array, int element) {
         ForkJoinPool forkJoinPool = new ForkJoinPool();
-        return forkJoinPool.invoke(new ParallelMergeSortArr(array, 0, array.length - 1, 3));
+        return forkJoinPool.invoke(new ParallelMergeSortArr(array, 0, array.length - 1, element));
+
     }
 }
