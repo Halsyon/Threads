@@ -161,7 +161,7 @@ public class SimpleComletableFuture {
         TimeUnit.SECONDS.sleep(3);
     }
 
-    //  Пример anyOf() - выдает ошибку Module 'job4j_threads' production: java.lang.ClassCastException:
+    //  Пример anyOf()
     public static CompletableFuture<String> whoWashHands(String name) {
         return CompletableFuture.supplyAsync(() -> {
             try {
@@ -208,9 +208,7 @@ public class SimpleComletableFuture {
 // Пример allOf()
         //SimpleComletableFuture.allOfExample();
 
-// Пример anyOf() - выдает ошибку Module 'job4j_threads' production: java.lang.ClassCastException:
-        //SimpleComletableFuture.anyOfExample();
-
-// Пример
+// Пример anyOf()
+        SimpleComletableFuture.anyOfExample();
     }
 }

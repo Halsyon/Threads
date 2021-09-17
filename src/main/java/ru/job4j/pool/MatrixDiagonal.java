@@ -26,7 +26,7 @@ public class MatrixDiagonal {
         futures.put(0, getTask(matrix, 0, n - 1, n - 1));
         // считаем суммы по побочным диагоналям
         for (int k = 1; k <= n; k++) {
-            futures.put(k, getTask(matrix, 0, k - 1, k - 1));
+            futures.put(k, getTask(matrix, 0, k - 1,  k - 1));
             if (k < n) {
                 futures.put(2 * n - k, getTask(matrix, n - k, n - 1, n - 1));
             }
@@ -50,10 +50,20 @@ public class MatrixDiagonal {
     }
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-        int[][] str = new int[3][4];
+        int[][] str = new int[3][3];
+        str[0][0] = 1;
+        str[0][1] = 2;
+        str[0][2] = 3;
+        str[1][0] = 4;
+        str[1][1] = 5;
+        str[1][2] = 6;
+        str[2][0] = 7;
+        str[2][1] = 8;
+        str[2][2] = 9;
         var t = MatrixDiagonal.asyncSum(str);
-        for (int i : t) {
-            System.out.println(t);
+        for (int i = 0; i < t.length; i++) {
+            System.out.println(t[i]);
         }
+
     }
 }
