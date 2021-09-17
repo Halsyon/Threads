@@ -37,7 +37,7 @@ public class ParallelMergeSortArr extends RecursiveTask<Integer> {
     @Override
     protected Integer compute() {
         if ((to - from) <= 10) {
-            for (int i = 0; i < array.length; i++) {
+            for (int i = from; i <= to; i++) {
                 if (array[i].equals(element)) {
                     return i;
                 }
@@ -61,6 +61,5 @@ public class ParallelMergeSortArr extends RecursiveTask<Integer> {
     public static Integer sort(Integer[] array, int element) {
         ForkJoinPool forkJoinPool = new ForkJoinPool();
         return forkJoinPool.invoke(new ParallelMergeSortArr(array, 0, array.length - 1, element));
-
     }
 }
