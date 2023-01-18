@@ -8,11 +8,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
 /**
- * 3. Junit тест для блокирующей очереди. [#68589]
- * Уровень : 3. МидлКатегория : 3.1. Multithreading
- * Топик : 3.1.4. Wait, Notify, NotifyAll
- * написать полноценный тест на блокирующую очередь.
- * @author SlartiBartFast-art
+  * написать полноценный тест на блокирующую очередь.
  * @since 09.09.2021
  */
 public class SimpleBlockingQueueTest {
