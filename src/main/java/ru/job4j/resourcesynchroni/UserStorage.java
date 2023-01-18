@@ -6,8 +6,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 3. Класс хранилища пользователей UserStorage [#1104]
- * Уровень : 3. Мидл Категория : 3.1. Multithreading Топик : 3.1.3. Синхронизация ресурсов
- * В этом задании нужно сделать блокирующий кеш UserStorage для модели User.
+ *  Синхронизация ресурсов
+ * В этом клессе реализовано- блокирующий кеш UserStorage для модели User.
  * 1. Создать класс - структуру данных для хранение пользователей UserStorage.
  * 2. В заголовке класса обозначить аннотацию @ThreadSafe
  * из библиотеки  <groupId>net.jcip</groupId>
@@ -15,8 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * boolean update(User user), boolean delete(User user).
  * 4. И особый метод transfer(int fromId, int toId, int amount);
  * 5. Структура данных должна быть потокобезопасная;
- * 6. В структуре User Должны быть поля int id, int amount.
- * @author SlartiBartFast-art
+ * 6. В структуре User Должны быть поля int id, int amount. 
  * @version 0.5
  * @since 01.09.2021
  */
