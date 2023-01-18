@@ -7,11 +7,9 @@ import static org.junit.Assert.*;
 
 /**
  * 0. CAS - операции [#6859]
- * Уровень : 3. Мидл Категория : 3.1. Multithreading
+ * 3.1. Multithreading
  * Топик : 3.1.5. Non Blocking Algoritm
  * Реализовать неблокирующий счетчик.
- *
- * @author SlartiBartFast-art
  * @since 09.09.2021
  */
 public class CASCountTest {
