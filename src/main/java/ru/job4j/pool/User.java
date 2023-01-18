@@ -2,11 +2,8 @@ package ru.job4j.pool;
 
 /**
  * 2. ExecutorService рассылка почты. [#63097]
- *  Уровень : 3. Мидл Категория : 3.1. Multithreading
- *  Топик : 3.1.6. Пулы
- *  часть 1
+ *
  *  Модель User описывают поля username, email.
- *  @author SlartiBartFast-art
  *  @since 13.09.2021
  */
 public class User {
