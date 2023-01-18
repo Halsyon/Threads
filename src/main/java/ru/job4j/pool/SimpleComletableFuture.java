@@ -4,9 +4,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 4. CompletableFuture [#361626]
- * Уровень : 3. Мидл Категория : 3.1.
- * MultithreadingТопик : 3.1.6. Пулы
+ *  CompletableFuture [
+ * MultithreadingТопик :  Пулы
  * Пример использования
  * CompletableFuture.runAsync()
  * CompletableFuture.supplyAsync()
@@ -35,8 +34,6 @@ import java.util.concurrent.TimeUnit;
  * anyOf() - Этот метод возвращает ComputableFuture<Object>. Результатом будет первая выполненная задача.
  * На том же примере мы можем, например, узнать, кто сейчас моет руки.
  * Результаты запуск от запуска будут различаться.
- *
- * @author SlartiBartFast-art
  * @since 16.09.2021
  */
 public class SimpleComletableFuture {
