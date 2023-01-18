@@ -6,9 +6,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 /**
- * 4. CompletableFuture [#361626]
- * Уровень : 3. Мидл Категория : 3.1.
- * MultithreadingТопик : 3.1.6. Пулы
+  * MultithreadingТопик : Пулы
  * Пример использования
  * 1. Дан каркас класса. Ваша задача подсчитать суммы по строкам и столбцам матрицы.
  * - sums[i].rowSum - сумма элементов по i строке
@@ -22,7 +20,6 @@ import java.util.concurrent.ExecutionException;
  * не возвращая результата. Для этой цели служат методы supplyAsync() и runAsync() соответственно.
  * Первый возвращает CompletableFuture<T>, второй CompletableFuture<Void>. Стоит отметить,
  * что создание предполагает и запуск. Оба этих метода запускают асинхронную задачу.
- * @author SlartiBartFast-art
  * @since 18.09.2021
  */
 public class RolColSumVar2 {
