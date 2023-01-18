@@ -10,11 +10,7 @@ import java.util.concurrent.ExecutionException;
 import static org.junit.Assert.*;
 
 /**
- * 4. CompletableFuture [#361626]
- * Уровень : 3. Мидл Категория : 3.1.
- * MultithreadingТопик : 3.1.6. Пулы
- *
- * @author SlartiBartFast-art
+ *  CompletableFuture [#361626]
  * @since 17.09.2021
  */
 public class RolColSumTest {
