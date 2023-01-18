@@ -6,15 +6,12 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 /**
- * 4. CompletableFuture [#361626]
- * Уровень : 3. Мидл Категория : 3.1.
- * MultithreadingТопик : 3.1.6. Пулы
+ * CompletableFuture 
+ * MultithreadingТопик :  Пулы
  * Пример использования
  * CompletableFuture.runAsync()
  * CompletableFuture.supplyAsync()
  * Пусть нам нужно посчитать суммы элементов по диагоналям матрицы.
- *
- * @author SlartiBartFast-art
  * @since 16.09.2021
  */
 public class MatrixDiagonal {
