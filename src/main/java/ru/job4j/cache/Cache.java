@@ -5,9 +5,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 1. Неблокирующий кеш [#4741]
- * Уровень : 3. Мидл Категория : 3.1. Multithreading
- * Топик : 3.1.5. Non Blocking Algorithm
+ * 1. Неблокирующий кеш 
+ * Топик Non Blocking Algorithm
  * CAS методами потокобезопасной коллекции ConcurrentHashMap.
  * Кеш - это элемент программы позволяющий увеличить скорость
  * работы за счет хранения данных в памяти.
@@ -22,7 +21,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * a) Реализуйте методы update, delete. *
  * b) Напишите модульные тесты. Они будут не многопоточные, а последовательные.
  *
- * @author SlartiBartFast-art
  * @since 10.09.2021
  */
 public class Cache {
