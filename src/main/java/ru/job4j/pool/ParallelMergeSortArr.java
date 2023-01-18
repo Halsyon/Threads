@@ -4,8 +4,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
 /**
- * 3. ForkJoinPool [#315067]
- * Уровень : 3. Мидл Категория : 3.1.
+ * 3. ForkJoinPool  
  * Multithreading Топик : 3.1.6. Пулы
  * Реализовать параллельный поиск индекса в массиве объектов. В целях оптимизации,
  * если размер массива не больше 10, использовать обычный линейный поиск.
@@ -17,8 +16,6 @@ import java.util.concurrent.RecursiveTask;
  * когда это возможно, содержат трассировки стека (как показано, например,
  * с помощью ex.printStackTrace()) как текущего потока, так и потока,
  * фактически столкнувшегося с исключением; минимально только последнее.
- *
- * @author SlartiBartFast-art
  * @since 14.09.2021
  */
 public class ParallelMergeSortArr extends RecursiveTask<Integer> {
