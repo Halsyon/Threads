@@ -8,13 +8,9 @@ import java.util.concurrent.ExecutionException;
 import static org.junit.Assert.*;
 
 /**
- * 4. CompletableFuture [#361626]
- * Уровень : 3. Мидл Категория : 3.1.
- * MultithreadingТопик : 3.1.6. Пулы
- * вариант 2
- *
- * @author SlartiBartFast-art
- * @since 18.09.2021
+ *  CompletableFuture [#361626]
+ * MultithreadingТопик :  Пулы
+  * @since 18.09.2021
  */
 public class RolColSumVar2Test {
     private int[][] str;
