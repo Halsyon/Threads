@@ -7,8 +7,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * 1. Реализовать шаблон Producer Consumer. [#1098]
- * Уровень : 3. Мидл Категория : 3.1. Multithreading Топик : 3.1.4.
+ * Реализовать шаблон Producer Consumer. 
  * Если очередь заполнена полностью,то при попытке добавления поток Producer блокируется,
  * до тех пор пока Consumer не извлечет очередные данные,т.е.в очереди появится свободное место.
  * И наоборот если очередь пуста поток Consumer блокируется,до тех пор пока Producer не поместит
@@ -22,7 +21,6 @@ import java.util.Queue;
  * count - поле с  типом int, которое будет ограничивать очередь сверху
  *
  * @param <T> generic type
- * @author SlartiBartFast-art
  * @since 03.09.2021
  */
 @ThreadSafe
