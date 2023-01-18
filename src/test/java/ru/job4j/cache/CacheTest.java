@@ -9,11 +9,7 @@ import static org.junit.Assert.*;
 
 /**
  * 1. Неблокирующий кеш [#4741]
- * Уровень : 3. Мидл Категория : 3.1. Multithreading
- * Топик : 3.1.5. Non Blocking Algorithm
- * Напишите модульные тесты. Они будут не многопоточные, а последовательные.
- *
- * @author SlartiBartFast-art
+  * Напишите модульные тесты. Они будут не многопоточные, а последовательные.
  * @since 11.09.2021
  */
 public class CacheTest {
