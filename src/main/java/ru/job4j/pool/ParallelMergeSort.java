@@ -4,12 +4,10 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
 /**
- * 3. ForkJoinPool [#315067]
- * Уровень : 3. Мидл Категория : 3.1.
- * Multithreading Топик : 3.1.6. Пулы
- * Пример испольщзования ForkJoinPool *
+*ForkJoinPool [#315067] 
+ * Multithreading Топик :  Пулы
+ * Пример испольщзования ForkJoinPool 
  *
- * @author SlartiBartFast-art
  * @since 14.09.2021
  */
 public class ParallelMergeSort extends RecursiveTask<int[]> {
