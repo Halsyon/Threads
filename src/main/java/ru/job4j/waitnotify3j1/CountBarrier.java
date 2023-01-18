@@ -2,10 +2,6 @@ package ru.job4j.waitnotify3j1;
 
 /**
  * 0. Управление нитью через wait. [#6858]
- * Уровень : 3. МидлКатегория : 3.1. Multithreading Топик : 3.1.4. Wait, Notify, NotifyAll
- * Разработайте класс, который блокирует выполнение по условию счетчика.
- *
- * @author SlartiBartFast-art
  * @version 0.2
  * @since 02.09.2021
  */
