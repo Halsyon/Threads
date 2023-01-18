@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * 1. Реализовать ThreadPool [#1099]
- * Уровень : 3. Мидл Категория : 3.1.
+ *
  * Multithreading Топик : 3.1.6. Пулы
  * tasks - это блокирующая очередь. Если в очереди нет элементов,
  * то нить переводиться в состоянии Thread.State.WAITING.
@@ -17,8 +17,6 @@ import java.util.List;
  * запуск потока вызывает run вызов метода объекта в этом отдельно выполняемом потоке.
  * int size = Runtime.getRuntime().availableProcessors()
  * -Инициализация пула должна быть по количеству ядер в системе.
- *
- * @author SlartiBartFast-art
  * @since 11.09.2021
  */
 public class ThreadPool {
