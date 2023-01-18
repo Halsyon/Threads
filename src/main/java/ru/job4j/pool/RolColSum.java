@@ -7,16 +7,13 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 4. CompletableFuture [#361626]
- * Уровень : 3. Мидл Категория : 3.1.
- * MultithreadingТопик : 3.1.6. Пулы
+ * CompletableFuture [#361626]
+ * MultithreadingТопик :  Пулы
  * Пример использования
  * 1. Дан каркас класса. Ваша задача подсчитать суммы по строкам и столбцам матрицы.
  * - sums[i].rowSum - сумма элементов по i строке
  * - sums[i].colSum  - сумма элементов по i столбцу
- *
- * @author SlartiBartFast-art
- * @since 16.09.2021
+ *  @since 16.09.2021
  */
 public class RolColSum {
 
