@@ -4,16 +4,12 @@ import java.util.Objects;
 
 /**
  * 1. Неблокирующий кеш [#4741]
- * Уровень : 3. Мидл Категория : 3.1. Multithreading
- * Топик : 3.1.5. Non Blocking Algorithm
  * ID - уникальный идентификатор. В системе будет только один объект с таким ID.
  * version - определяет достоверность версии в кеше. Подробнее ниже.
  * Поле name - это поля бизнес модели. В нашем примере это одно поле name.
  * Это поле имеет get set методы.
  * часть 1
- *
- * @author SlartiBartFast-art
- * @since 09.09.2021
+  * @since 09.09.2021
  */
 public class Base {
     private final int id;
